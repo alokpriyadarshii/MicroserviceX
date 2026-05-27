@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "mkdir -p public && cp -R spring-animalclinic-api-gateway/src/main/resources/static/. public/"
+  }
+}

@@ -19,5 +19,6 @@ target/
 
 # Branch switching
 generated/
+public/
 
 **/.DS_Store

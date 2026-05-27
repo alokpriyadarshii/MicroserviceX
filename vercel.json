@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/owners/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/vets/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}
