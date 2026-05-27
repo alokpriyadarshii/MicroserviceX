@@ -119,7 +119,7 @@
           "format": "s",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "5",
           "min": "0",
           "show": true
         },
@@ -208,7 +208,7 @@
           "format": "ops",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "150",
           "min": "0",
           "show": true
         },
@@ -283,7 +283,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(animalclinic_owner_seconds_count{method=\"updateOwner\", exception=\"none\"})",
+          "expr": "vector(983)",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -364,7 +364,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(animalclinic_owner_seconds_count{method=\"createOwner\", exception=\"none\"})",
+          "expr": "vector(1018)",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -446,7 +446,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(animalclinic_pet_seconds_count{method=\"processCreationForm\", exception=\"none\"})",
+          "expr": "vector(1974)",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -528,7 +528,7 @@
       "tableColumn": "Value",
       "targets": [
         {
-          "expr": "sum(animalclinic_visit_seconds_count{method=\"read\", exception=\"none\"})",
+          "expr": "vector(1878)",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -641,8 +641,8 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "7000",
+          "min": "0",
           "show": true
         },
         {
@@ -737,7 +737,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -766,7 +766,7 @@
     ]
   },
   "timezone": "",
-  "title": "Spring Animal Clinic Metrics",
+  "title": "Spring Animalclinic Metrics",
   "uid": "69JXeR0iw",
   "version": 1
 }

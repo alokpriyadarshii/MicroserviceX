@@ -16,6 +16,8 @@ The application demonstrates a small veterinary clinic system split into indepen
 
 <img src="./images/preview-5.png" alt="MicroservicesX Preview 5" width="100%" />
 
+<img src="./images/preview-6.png" alt="MicroservicesX Preview 6" width="100%" />
+
 ## Features
 
 - AngularJS frontend served through Spring Cloud Gateway.
