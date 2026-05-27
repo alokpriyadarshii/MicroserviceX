@@ -29,6 +29,91 @@ The application demonstrates a small veterinary clinic system split into indepen
 - Spring Boot Admin support.
 - Optional MySQL profile for persistent storage.
 
+## Tech Stack
+
+| Category | Technology |
+| --- | --- |
+| Programming Language | Java 17 |
+| Backend Framework | Spring Boot 4 |
+| Microservices | Spring Cloud |
+| API Gateway | Spring Cloud Gateway / WebFlux |
+| Service Discovery | Netflix Eureka |
+| Configuration | Spring Cloud Config Server |
+| AI Integration | Spring AI, OpenAI API |
+| Frontend | AngularJS, Bootstrap, Font Awesome |
+| Database | HSQLDB, MySQL |
+| ORM / Persistence | Spring Data JPA |
+| Monitoring | Micrometer, Prometheus, Grafana |
+| Tracing | Zipkin |
+| Resilience | Resilience4j Circuit Breaker |
+| Caching | Caffeine |
+| Build Tool | Maven / Maven Wrapper |
+| Containerization | Docker, Docker Compose |
+| Testing | JUnit 5, Spring Boot Test |
+| Deployment Config | Vercel |
+
+## Project Structure
+
+```text
+MicroserviceX/
+├── .devcontainer/
+├── .github/
+├── .mvn/
+│   └── wrapper/
+├── api/
+│   └── genai/
+├── docker/
+│   ├── grafana/
+│   │   └── dashboards/
+│   └── prometheus/
+├── images/
+│   ├── preview-1.png
+│   ├── preview-2.png
+│   ├── preview-3.png
+│   ├── preview-4.png
+│   ├── preview-5.png
+│   └── preview-6.png
+├── scripts/
+├── spring-animalclinic-admin-server/
+│   ├── pom.xml
+│   └── src/
+├── spring-animalclinic-api-gateway/
+│   ├── pom.xml
+│   └── src/
+│       └── main/
+│           └── resources/
+│               └── static/
+├── spring-animalclinic-config-server/
+│   ├── pom.xml
+│   └── src/
+├── spring-animalclinic-customers-service/
+│   ├── pom.xml
+│   └── src/
+├── spring-animalclinic-discovery-server/
+│   ├── pom.xml
+│   └── src/
+├── spring-animalclinic-genai-service/
+│   ├── pom.xml
+│   └── src/
+├── spring-animalclinic-vets-service/
+│   ├── pom.xml
+│   └── src/
+├── spring-animalclinic-visits-service/
+│   ├── pom.xml
+│   └── src/
+├── .editorconfig
+├── .gitattributes
+├── .gitignore
+├── docker-compose.yml
+├── LICENSE
+├── mvnw
+├── mvnw.cmd
+├── package.json
+├── pom.xml
+├── README.md
+└── vercel.json
+```
+
 ## Services
 
 | Service | Purpose | Local URL |
