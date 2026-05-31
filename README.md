@@ -173,7 +173,7 @@ Start only Grafana and Prometheus:
 docker compose up -d grafana-server prometheus-server
 ```
 
-Docker Desktop or another Docker-compatible runtime must be installed and running.
+Docker Desktop or another Docker compatible runtime must be installed and running.
 
 ## Chatbot
 
@@ -209,7 +209,7 @@ docker/grafana/dashboards/grafana-animalclinic-dashboard.json
 
 ## Database
 
-By default, Animal Clinic uses an in-memory HSQLDB database populated at startup.
+By default, Animal Clinic uses an in memory HSQLDB database populated at startup.
 
 To run with MySQL, start a database:
 
