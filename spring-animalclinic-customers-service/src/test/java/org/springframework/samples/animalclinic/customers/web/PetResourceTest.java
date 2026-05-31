@@ -17,7 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,6 +55,32 @@ class PetResourceTest {
             .andExpect(jsonPath("$.id").value(2))
             .andExpect(jsonPath("$.name").value("Basil"))
             .andExpect(jsonPath("$.type.id").value(6));
+    }
+
+    @Test
+    void shouldUsePathPetIdWhenUpdatingPet() throws Exception {
+        Pet pet = setupPet();
+        PetType petType = new PetType();
+        petType.setId(7);
+
+        given(petRepository.findById(2)).willReturn(Optional.of(pet));
+        given(petRepository.findPetTypeById(7)).willReturn(Optional.of(petType));
+
+        mvc.perform(put("/owners/2/pets/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "id": 999,
+                      "name": "Basil Updated",
+                      "birthDate": "2024-01-15",
+                      "typeId": 7
+                    }
+                    """))
+            .andExpect(status().isNoContent());
+
+        verify(petRepository).findById(2);
+        verify(petRepository, never()).findById(999);
+        verify(petRepository).save(pet);
     }
 
     private Pet setupPet() {
