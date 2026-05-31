@@ -59,6 +59,7 @@ class VisitResource {
         @Valid @RequestBody Visit visit,
         @PathVariable("petId") @Min(1) int petId) {
 
+        visit.setId(null);
         visit.setPetId(petId);
         log.info("Saving visit {}", visit);
         return visitRepository.save(visit);
