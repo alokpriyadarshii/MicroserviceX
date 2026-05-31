@@ -1,16 +1,107 @@
+const CHAT_MESSAGES_STORAGE_KEY = 'chatMessages';
+const UNSAFE_MARKDOWN_TAGS = new Set([
+    'base',
+    'button',
+    'embed',
+    'form',
+    'iframe',
+    'input',
+    'link',
+    'meta',
+    'object',
+    'option',
+    'script',
+    'select',
+    'style',
+    'textarea'
+]);
+
+let chatMessagesHistory = [];
+
 function appendMessage(message, type) {
     const chatMessages = document.getElementById('chatbox-messages');
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-bubble', type);
 
-    // Convert Markdown to HTML
-    const htmlContent = marked.parse(message); // Use marked.parse() for newer versions
-    messageElement.innerHTML = htmlContent;
+    messageElement.appendChild(renderMessageContent(message, type));
 
     chatMessages.appendChild(messageElement);
+    chatMessagesHistory.push({ message, type });
+    saveChatMessages();
 
     // Scroll to the bottom of the chatbox to show the latest message
     chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function renderMessageContent(message, type) {
+    const messageText = message || '';
+
+    if (type === 'user' || !window.marked) {
+        const text = document.createElement('span');
+        text.textContent = messageText;
+        return text;
+    }
+
+    const template = document.createElement('template');
+    template.innerHTML = marked.parse(escapeHtml(messageText));
+    sanitizeMessageContent(template.content);
+
+    const content = document.createElement('div');
+    content.appendChild(template.content.cloneNode(true));
+    return content;
+}
+
+function sanitizeMessageContent(content) {
+    content.querySelectorAll('*').forEach(element => {
+        const tagName = element.tagName.toLowerCase();
+
+        if (UNSAFE_MARKDOWN_TAGS.has(tagName)) {
+            element.remove();
+            return;
+        }
+
+        [...element.attributes].forEach(attribute => {
+            const name = attribute.name.toLowerCase();
+
+            if (name.startsWith('on') || name === 'srcdoc') {
+                element.removeAttribute(attribute.name);
+                return;
+            }
+
+            if (name === 'style') {
+                element.removeAttribute(attribute.name);
+                return;
+            }
+
+            if ((name === 'href' || name === 'src' || name === 'xlink:href') && !isSafeUrl(attribute.value)) {
+                element.removeAttribute(attribute.name);
+            }
+        });
+    });
+}
+
+function escapeHtml(value) {
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function isSafeUrl(value) {
+    const url = value.trim();
+
+    if (!url) {
+        return true;
+    }
+
+    try {
+        const parsedUrl = new URL(url, window.location.origin);
+        return ['http:', 'https:', 'mailto:', 'tel:'].includes(parsedUrl.protocol);
+    } catch (error) {
+        return false;
+    }
 }
 
 function toggleChatbox() {
@@ -67,15 +158,29 @@ function handleKeyPress(event) {
 
 // Save chat messages to localStorage
 function saveChatMessages() {
-    const messages = document.getElementById('chatbox-messages').innerHTML;
-    localStorage.setItem('chatMessages', messages);
+    localStorage.setItem(CHAT_MESSAGES_STORAGE_KEY, JSON.stringify(chatMessagesHistory));
 }
 
 // Load chat messages from localStorage
 function loadChatMessages() {
-    const messages = localStorage.getItem('chatMessages');
-    if (messages) {
-        document.getElementById('chatbox-messages').innerHTML = messages;
-        document.getElementById('chatbox-messages').scrollTop = document.getElementById('chatbox-messages').scrollHeight;
+    const savedMessages = localStorage.getItem(CHAT_MESSAGES_STORAGE_KEY);
+
+    if (!savedMessages) {
+        return;
+    }
+
+    try {
+        const parsedMessages = JSON.parse(savedMessages);
+
+        if (!Array.isArray(parsedMessages)) {
+            localStorage.removeItem(CHAT_MESSAGES_STORAGE_KEY);
+            return;
+        }
+
+        parsedMessages
+            .filter(({ message, type }) => typeof message === 'string' && ['bot', 'user'].includes(type))
+            .forEach(({ message, type }) => appendMessage(message, type));
+    } catch (error) {
+        localStorage.removeItem(CHAT_MESSAGES_STORAGE_KEY);
     }
 }

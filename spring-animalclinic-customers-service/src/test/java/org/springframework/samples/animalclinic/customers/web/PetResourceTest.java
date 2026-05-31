@@ -20,6 +20,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -81,6 +82,45 @@ class PetResourceTest {
         verify(petRepository).findById(2);
         verify(petRepository, never()).findById(999);
         verify(petRepository).save(pet);
+    }
+
+    @Test
+    void shouldRejectInvalidPetWhenCreatingPet() throws Exception {
+        mvc.perform(post("/owners/2/pets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "id": 0,
+                      "name": "",
+                      "birthDate": "2024-01-15",
+                      "typeId": 7
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
+
+        verify(petRepository, never()).save(org.mockito.ArgumentMatchers.any(Pet.class));
+    }
+
+    @Test
+    void shouldRejectUnknownPetTypeWhenUpdatingPet() throws Exception {
+        Pet pet = setupPet();
+
+        given(petRepository.findById(2)).willReturn(Optional.of(pet));
+        given(petRepository.findPetTypeById(99)).willReturn(Optional.empty());
+
+        mvc.perform(put("/owners/2/pets/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "id": 2,
+                      "name": "Basil Updated",
+                      "birthDate": "2024-01-15",
+                      "typeId": 99
+                    }
+                    """))
+            .andExpect(status().isNotFound());
+
+        verify(petRepository, never()).save(pet);
     }
 
     private Pet setupPet() {
