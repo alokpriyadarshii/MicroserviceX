@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: animalclinic-common-env
+data:
+  SPRING_PROFILES_ACTIVE: docker
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+              - localhost:9090
+      - job_name: animalclinic-services
+        metrics_path: /actuator/prometheus
+        static_configs:
+          - targets:
+              - api-gateway:8080
+              - admin-server:9090
+              - customers-service:8081
+              - visits-service:8082
+              - vets-service:8083
+              - genai-service:8084
+              - discovery-server:8761
+              - config-server:8888
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+data:
+  datasources.yml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus-server:9090
+        isDefault: true

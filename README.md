@@ -50,7 +50,7 @@ The application demonstrates a small veterinary clinic system split into indepen
 | Build Tool | Maven / Maven Wrapper |
 | Containerization | Docker, Docker Compose |
 | Testing | JUnit 5, Spring Boot Test |
-| Deployment Config | Vercel |
+| Deployment Config | Docker Compose, Kubernetes, Vercel |
 
 ## Project Structure
 
@@ -73,6 +73,13 @@ MicroserviceX/
 │   ├── preview-4.png
 │   ├── preview-5.png
 │   └── preview-6.png
+├── k8s/
+│   ├── configmaps.yaml
+│   ├── deployments.yaml
+│   ├── kustomization.yaml
+│   ├── namespace.yaml
+│   ├── README.md
+│   └── services.yaml
 ├── scripts/
 ├── spring-animalclinic-admin-server/
 │   ├── pom.xml
@@ -175,6 +182,29 @@ docker compose up -d grafana-server prometheus-server
 
 Docker Desktop or another Docker compatible runtime must be installed and running.
 
+## Run With Kubernetes
+
+Deploy the stack into the `animalclinic` namespace:
+
+```bash
+kubectl apply -k k8s
+kubectl -n animalclinic get pods
+```
+
+Access the API Gateway locally:
+
+```bash
+kubectl -n animalclinic port-forward svc/api-gateway 8080:8080
+```
+
+Open the app at:
+
+```text
+http://localhost:8080
+```
+
+See `k8s/README.md` for monitoring port forwards, optional GenAI secrets, and cleanup steps.
+
 ## Chatbot
 
 The GenAI service is the backend for the “Chat with Us!” widget. It can use OpenAI when a real key is configured:
@@ -235,6 +265,7 @@ The MySQL schema and data scripts are available under each data service’s `db/
 | Vets service | `spring-animalclinic-vets-service` |
 | Visits service | `spring-animalclinic-visits-service` |
 | GenAI service | `spring-animalclinic-genai-service` |
+| Kubernetes manifests | `k8s` |
 | Grafana dashboard | `docker/grafana/dashboards/grafana-animalclinic-dashboard.json` |
 | Prometheus config | `docker/prometheus/prometheus.yml` |
 | Preview images | `images` |
