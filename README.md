@@ -78,7 +78,6 @@ MicroserviceX/
 │   ├── deployments.yaml
 │   ├── kustomization.yaml
 │   ├── namespace.yaml
-│   ├── README.md
 │   └── services.yaml
 ├── scripts/
 ├── spring-animalclinic-admin-server/
