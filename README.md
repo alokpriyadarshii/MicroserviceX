@@ -184,6 +184,12 @@ Docker Desktop or another Docker compatible runtime must be installed and runnin
 
 ## Run With Kubernetes
 
+Validate the manifests locally:
+
+```bash
+scripts/check_k8s.sh
+```
+
 Deploy the stack into the `animalclinic` namespace:
 
 ```bash
