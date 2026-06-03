@@ -33,7 +33,7 @@ The application demonstrates a small veterinary clinic system split into indepen
 
 | Category | Technology |
 | --- | --- |
-| Programming Language | J 21 |
+| Programming Language | Java 21 |
 | Backend Framework | Spring Boot 4 |
 | Microservices | Spring Cloud |
 | API Gateway | Spring Cloud Gateway / WebFlux |
