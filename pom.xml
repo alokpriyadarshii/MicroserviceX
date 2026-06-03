@@ -15,6 +15,14 @@
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
+    <developers>
+        <developer>
+            <id>alokpriyadarshii</id>
+            <name>Alok Priyadarshii</name>
+            <url>https://github.com/alokpriyadarshii</url>
+        </developer>
+    </developers>
+
     <modules>
         <module>spring-animalclinic-admin-server</module>
         <module>spring-animalclinic-customers-service</module>
